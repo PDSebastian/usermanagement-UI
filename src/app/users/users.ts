@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import {User} from '../models/user';
+import { first } from 'rxjs';
 
 
 @Component({
@@ -9,28 +10,12 @@ import {User} from '../models/user';
   templateUrl: './users.html',
 })
 export class UsersData {
-  newId:number=6;
-  add():void{
+  newId: number = 6;
 
-    const user:User={id:this.newId, firstName:this.firstname(), lastName:this.lastname(), email:this.email(),age:this.age()};
-    this.newId++;
-    this.users.update((list) => list.filter((user) => user.id !== this.newId));
-    this.firstname=signal<string>(' ');
-    this.lastname=signal<string>(' ');
-    this.email=signal<string>(' ');
-    this.age=signal<number>(0);
-
-
-  }
-
-
-  firstname=signal<string>(' ');
-  lastname=signal<string>(' ');
-  email=signal<string>(' ');
-  age=signal<number>(0);
-
-
-
+  firstname = signal<string>(' ');
+  lastname = signal<string>(' ');
+  email = signal<string>(' ');
+  age = signal<number>(0);
   protected readonly users = signal<User[]>([
     {
       id: 1,
@@ -51,13 +36,24 @@ export class UsersData {
     { id: 5, firstName: 'Mihai', lastName: 'Dumitru', email: 'mihai.dumitru@yahoo.com', age: 24 },
   ]);
 
+  add(): void {
+    const user: User = {
+      id: this.newId,
+      firstName: this.firstname(),
+      lastName: this.lastname(),
+      email: this.email(),
+      age: this.age(),
+    };
+    console.log(this.firstname());
+    this.newId++;
+    this.users.update((list) => list.filter((user) => user.id !== this.newId));
+  }
+
+
   remove(id: number): void {
     this.users.update((list) => list.filter((user) => user.id !== id));
   }
 
-
-
-
-
+  protected readonly first = first;
 }
 

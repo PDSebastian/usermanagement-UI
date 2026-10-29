@@ -54,21 +54,59 @@
       <button class=" " (click)="remove(user.id)">Sterge</button>
     </tr>
     }
-
-
-
-
     </tbody>
   </table>
 
-  <!-- paginare: page / totalPages / totalElements din PageResponse -->
-  <div class="pagination">
-    <span class="pagination-info">Pagina 1 din 2 &middot; 5 utilizatori in total</span>
-    <div class="pagination-pages">
-      <button class="btn btn-outline btn-sm" disabled>Inapoi</button>
-      <button class="btn btn-primary btn-sm">1</button>
-      <button class="btn btn-outline btn-sm">2</button>
-      <button class="btn btn-outline btn-sm">Inainte</button>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Date utilizator</h2>
+      <span class="endpoint-tag">POST /api/users</span>
+    </div>
+    <div class="card-body">
+
+
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label class="form-label">Prenume</label>
+          <input #first [value]="firstname()" (input)="firstname.set(first.value)"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nume</label>
+          <input type="text" class="form-input is-invalid" value="" />
+<!--          <span class="form-error">Last name is required</span>-->
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input is-invalid" value="cristian.tudor" />
+<!--          <span class="form-error">Email must be a valid address</span>-->
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Parola</label>
+          <input type="password" class="form-input is-invalid" value="1234" />
+<!--          <span class="form-error">Password must be at least 8 characters</span>-->
+<!--          <span class="form-hint">Minim 8 caractere.</span>-->
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Varsta</label>
+          <input type="number" class="form-input is-invalid" value="0" />
+<!--          <span class="form-error">Age must be greater than zero</span>-->
+<!--          <span class="form-hint">Intre 1 si 120.</span>-->
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <button href="index.html" class="btn btn-outline">Renunta</button>
+        <button type="button"  class=" btn btn-primary" (click)=" add()"  >Salveaza</button>
+      </div>
+
     </div>
   </div>
 
