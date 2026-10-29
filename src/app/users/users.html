@@ -1,1 +1,68 @@
-<p>users works!</p>
+<div class="card">
+
+  <div class="table-toolbar">
+    <div class="table-filters">
+      <input type="search" class="form-input table-search" placeholder="Caut&#259; dup&#259; nume..." />
+      <input type="number" class="form-input" style="max-width: 150px" placeholder="Varsta minima" />
+      <select class="form-select" style="max-width: 190px">
+        <option>Sorteaza: nume (A-Z)</option>
+        <option>Sorteaza: nume (Z-A)</option>
+        <option>Sorteaza: varsta (crescator)</option>
+        <option>Sorteaza: varsta (descrescator)</option>
+      </select>
+      <button class="btn btn-outline btn-sm">Reincarca</button>
+    </div>
+    <span class="endpoint-tag">GET /api/users/search</span>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Utilizator</th>
+      <th>Varsta</th>
+      <th>Identificator</th>
+      <th class="text-right">Actiuni</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @for (user of users(); track user.id){
+    <tr>
+      <td>
+        <div class="user-cell">
+          <div class="user-cell-avatar">BA</div>
+          <div>
+            <div class="user-cell-name">{{user.lastName}}</div>
+            <div class="user-cell-email">bogdan.alexandrescu@gmail.com</div>
+          </div>
+        </div>
+      </td>
+      <td><span class="badge badge-neutral">41 ani</span></td>
+      <td class="text-mono text-truncate">3f2a91c4</td>
+      <td class="text-right">
+        <div class="table-actions">
+          <a href="user-detail.html" class="btn btn-outline btn-sm">Detalii</a>
+          <a href="user-form.html" class="btn btn-outline btn-sm">Editeaza</a>
+          <button class="btn btn-danger btn-sm">Sterge</button>
+        </div>
+      </td>
+    </tr>
+    }
+
+
+
+    </tbody>
+  </table>
+
+  <!-- paginare: page / totalPages / totalElements din PageResponse -->
+  <div class="pagination">
+    <span class="pagination-info">Pagina 1 din 2 &middot; 5 utilizatori in total</span>
+    <div class="pagination-pages">
+      <button class="btn btn-outline btn-sm" disabled>Inapoi</button>
+      <button class="btn btn-primary btn-sm">1</button>
+      <button class="btn btn-outline btn-sm">2</button>
+      <button class="btn btn-outline btn-sm">Inainte</button>
+    </div>
+  </div>
+
+</div>
