@@ -1,3 +1,4 @@
+<h1 class="page-title">Utilizatori ({{ users().length }})</h1>
 <div class="card">
 
   <div class="table-toolbar">
@@ -33,12 +34,16 @@
           <div class="user-cell-avatar">BA</div>
           <div>
             <div class="user-cell-name">{{user.lastName}}</div>
-            <div class="user-cell-email">bogdan.alexandrescu@gmail.com</div>
+            <div class="user-cell-email">{{user.email}}</div>
           </div>
         </div>
       </td>
-      <td><span class="badge badge-neutral">41 ani</span></td>
-      <td class="text-mono text-truncate">3f2a91c4</td>
+      @if (user.age<18){
+      <td><span class="badge badge-warning">{{user.age}}</span></td>
+      } @else {
+        <td><span class="badge badge-neutral">{{user.age}}</span></td>
+      }
+      <td class="text-mono text-truncate">{{user.id}}</td>
       <td class="text-right">
         <div class="table-actions">
           <a href="user-detail.html" class="btn btn-outline btn-sm">Detalii</a>
@@ -46,8 +51,10 @@
           <button class="btn btn-danger btn-sm">Sterge</button>
         </div>
       </td>
+      <button class=" " (click)="remove(user.id)">Sterge</button>
     </tr>
     }
+
 
 
 
