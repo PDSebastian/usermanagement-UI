@@ -1,30 +1,71 @@
-<h1>Utilizatori</h1>
-
-<div>
-  <input #first [value]="firstname()" (input)="firstname.set(first.value)" placeholder="Prenume">
-  <input #last [value]="lastname()" (input)="lastname.set(last.value)" placeholder="Nume">
-  <input #mail [value]="email()" (input)="email.set(mail.value)" placeholder="Email">
-  <input #years type="number" [value]="age()" (input)="age.set(years.valueAsNumber)" placeholder="Vârstă">
-  <button [disabled]="!canSave()" (click)="save()">Salvează</button>
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Utilizatori {{users().length}}</h1>
+  </div>
 </div>
 
-<br>
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Varsta medie</div>
+    <div class="stat-value">{{averageAge()}}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Minori</div>
+    <div class="stat-value">{{minori()}}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Adulti</div>
+    <div class="stat-value">{{users().length-minori()}}</div>
+  </div>
+</div>
 
-@if (users().length > 0) {
-  <table border="1">
-    @for (user of users(); track user.id) {
+<div class="card">
+  <div class="table-toolbar">
+    <input type="search" class="form-input table-search" placeholder="Cauta dupa nume..." />
+  </div>
+  <table>
+    <thead>
       <tr>
-        <td>{{ user.firstName }} {{ user.lastName }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.age }} ani</td>
-        <td>
-          <button (click)="edit(user)">Editează</button>
-          <button (click)="remove(user.id)">Șterge</button>
-        </td>
+        <th>Utilizator</th>
+        <th>Varsta</th>
+        <th class="text-right">Actiuni</th>
       </tr>
-    }
-  </table>
-} @else {
-  <p>Niciun utilizator</p>
-}
+    </thead>
+    <tbody>
 
+      @for (user of users();track  user.id){
+        <tr>
+          <td>
+            <div class="user-cell">
+              <div class="user-cell-avatar">{{user.firstName[0]}} {{user.lastName[0]}}</div>
+              <div>
+                <div class="user-cell-name">{{user.firstName}} {{user.lastName}}</div>
+                <div class="user-cell-email">{{user.email}}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+
+        <tr>
+          <td>
+          @if (user.age<=18){
+            <span class="badge badge-warning">{{user.age}} ani</span>
+
+          } @else {
+            <span class="badge badge-neutral">{{user.age}} ani</span>
+          }</td>
+          <td class="text-right">
+            <div class="table-actions">
+              <span class="badge badge-neutral"></span>
+              <button class="btn btn-outline" (click)="edit(user)">Editeaza </button>
+              <button class="btn btn-danger" (click)="remove(user.id)">Sterge</button>
+            </div>
+          </td>
+
+        </tr>
+      }
+
+
+    </tbody>
+  </table>
+</div>
