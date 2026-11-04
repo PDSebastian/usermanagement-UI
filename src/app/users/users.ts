@@ -1,7 +1,5 @@
-import { Component, signal } from '@angular/core';
-import {User} from '../models/user';
-import { first } from 'rxjs';
-
+import { Component, signal, computed } from '@angular/core';
+import { User } from '../models/user';
 
 @Component({
   imports: [],
@@ -10,12 +8,14 @@ import { first } from 'rxjs';
   templateUrl: './users.html',
 })
 export class UsersData {
-  newId: number = 6;
+  nextId: number = 6;
+  editedId = signal<number>(0);
 
-  firstname = signal<string>(' ');
-  lastname = signal<string>(' ');
-  email = signal<string>(' ');
+  firstname = signal<string>('');
+  lastname = signal<string>('');
+  email = signal<string>('');
   age = signal<number>(0);
+
   protected readonly users = signal<User[]>([
     {
       id: 1,
@@ -36,24 +36,54 @@ export class UsersData {
     { id: 5, firstName: 'Mihai', lastName: 'Dumitru', email: 'mihai.dumitru@yahoo.com', age: 24 },
   ]);
 
-  add(): void {
-    const user: User = {
-      id: this.newId,
-      firstName: this.firstname(),
-      lastName: this.lastname(),
-      email: this.email(),
-      age: this.age(),
-    };
-    console.log(this.firstname());
-    this.newId++;
-    this.users.update((list) => list.filter((user) => user.id !== this.newId));
+  canSave = computed<boolean>(
+    () => this.firstname().trim() !== '' && this.lastname().trim() !== '' && this.age() > 0,
+  );
+
+  save(): void {
+    if (this.editedId() === 0) {
+      const user: User = {
+        id: this.nextId,
+        firstName: this.firstname(),
+        lastName: this.lastname(),
+        email: this.email(),
+        age: this.age(),
+      };
+      this.nextId++;
+      this.users.update((list) => [...list, user]);
+    } else {
+      this.users.update((list) =>
+        list.map((user) =>
+          user.id === this.editedId()
+            ? {
+                id: user.id,
+                firstName: this.firstname(),
+                lastName: this.lastname(),
+                email: this.email(),
+                age: this.age(),
+              }
+            : user,
+        ),
+      );
+      this.editedId.set(0);
+    }
+
+    this.firstname.set('');
+    this.lastname.set('');
+    this.email.set('');
+    this.age.set(0);
   }
 
+  edit(user: User): void {
+    this.editedId.set(user.id);
+    this.firstname.set(user.firstName);
+    this.lastname.set(user.lastName);
+    this.email.set(user.email);
+    this.age.set(user.age);
+  }
 
   remove(id: number): void {
     this.users.update((list) => list.filter((user) => user.id !== id));
   }
-
-  protected readonly first = first;
 }
 
