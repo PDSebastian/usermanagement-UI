@@ -68,88 +68,48 @@ export class UsersData {
   lastname = signal<string>('');
   email = signal<string>('');
   age = signal<number>(0);
-  canSave = computed<boolean>(
-    () => this.firstname().trim() !== '' && this.lastname().trim() !== '' && this.age() > 0,
-  );
+  canSave = computed<boolean>(() => {
+    return (
+      this.firstname().trim() !== '' && this.lastname().trim() !== '' && this.email().trim() !== ''
+    );
+  });
 
-  averageAge = computed<number>(()=>{
-     if(this.users().length===0){
-       return 0;
-     }
-     let sum=0;
-     for(const  user of this.users()){
-       sum+=user.age;
-     }
-     return Math.round((sum / this.users().length) *10)/10;
-  })
-  minori =computed<number>(()=>{
-    let ct =0;
-      for(const user of this.users()){
-
-         if(user.age<18){
-          ct ++;
-        }
-
-
-      }
-
-      return ct;
-
-  })
-
-
-
-  save(): void {
-    if (this.editedId() === 0) {
-      const user: User = {
-        id: this.nextId,
-        firstName: this.firstname(),
-        lastName: this.lastname(),
-        email: this.email(),
-        age: this.age(),
-      };
-      this.nextId++;
-      this.users.update((list) => [...list, user]);
-    } else {
-      this.users.update((list) =>
-        list.map((user) =>
-          user.id === this.editedId()
-            ? {
-                id: user.id,
-                firstName: this.firstname(),
-                lastName: this.lastname(),
-                email: this.email(),
-                age: this.age(),
-              }
-            : user,
-        ),
-      );
-      this.editedId.set(0);
+  averageAge = computed<number>(() => {
+    if (this.users().length === 0) {
+      return 0;
     }
-
-    this.firstname.set('');
-    this.lastname.set('');
-    this.email.set('');
-    this.age.set(0);
-  }
-
-  edit(user: User): void {
-    this.editedId.set(user.id);
-    this.firstname.set(user.firstName);
-    this.lastname.set(user.lastName);
-    this.email.set(user.email);
-    this.age.set(user.age);
-  }
-
- remove(id: number): void {
-    const list=this.users();
-    const newList =[];
-    for(let i=0; i<list.length; i++){
-      const user=list[i];
-      if(user.id!==id){
-        newList.push(user);
+    let sum = 0;
+    for (const user of this.users()) {
+      sum += user.age;
+    }
+    return Math.round((sum / this.users().length) * 10) / 10;
+  });
+  minori = computed<number>(() => {
+    let ct = 0;
+    for (const user of this.users()) {
+      if (user.age < 18) {
+        ct++;
       }
     }
-    return  this.users.set(newList);
- }
+
+    return ct;
+  });
+
+  save() {
+    const newUser: User = {
+      id: this.nextId,
+      firstName: this.firstname(),
+      lastName: this.lastname(),
+      email: this.email(),
+      age: this.age(),
+    };
+    console.log(newUser);
+    this.nextId++;
+
+    let use: User[] = this.users();
+    use.push(newUser);
+    this.users.update(() => use);
+  }
 }
+
+

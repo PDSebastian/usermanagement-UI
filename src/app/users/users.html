@@ -1,46 +1,82 @@
 <div class="page-header">
   <div>
-    <h1 class="page-title">Utilizatori {{users().length}}</h1>
+    <h1 class="page-title">Utilizatori {{ users().length }}</h1>
   </div>
 </div>
 
 <div class="stats-grid">
   <div class="stat-card">
     <div class="stat-label">Varsta medie</div>
-    <div class="stat-value">{{averageAge()}}</div>
+    <div class="stat-value">{{ averageAge() }}</div>
   </div>
   <div class="stat-card">
     <div class="stat-label">Minori</div>
-    <div class="stat-value">{{minori()}}</div>
+    <div class="stat-value">{{ minori() }}</div>
   </div>
   <div class="stat-card">
     <div class="stat-label">Adulti</div>
-    <div class="stat-value">{{users().length-minori()}}</div>
+    <div class="stat-value">{{ users().length - minori() }}</div>
   </div>
 </div>
 
+
+<div class="card">
+
+  <div class="card-header">
+    @if (editedId()===0) {
+      <h2>Utilizator nou</h2>
+    } @else {
+      <h2>Editeaza</h2>
+    }
+  </div>
+  <div class="card-body">
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Prenume</label>
+        <input class="form-input" #first [value]="firstname()" (input)="firstname.set(first.value)" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nume</label>
+        <input class="form-input"#second [value]="lastname()" (input)="lastname.set(second.value)" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" #third [value]="email()"(input)="email.set(third.value)"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Varsta</label>
+        <input class="form-input" type="number" value="0" #last [value]="age()" (input)="age.set(last.valueAsNumber)" />
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary"  [disabled]="canSave()" (click)= "save()">Salveaza</button>
+    </div>
+  </div>
+</div>
+
+
 <div class="card">
   <div class="table-toolbar">
-    <input type="search" class="form-input table-search" placeholder="Cauta dupa nume..." />
+    <input class="form-input table-search" placeholder="Cauta dupa nume..." type="search" />
   </div>
   <table>
     <thead>
-      <tr>
-        <th>Utilizator</th>
-        <th>Varsta</th>
-        <th class="text-right">Actiuni</th>
-      </tr>
+    <tr>
+      <th>Utilizator</th>
+      <th>Varsta</th>
+      <th class="text-right">Actiuni</th>
+    </tr>
     </thead>
     <tbody>
 
-      @for (user of users();track  user.id){
+      @for (user of users(); track user.id) {
         <tr>
           <td>
             <div class="user-cell">
-              <div class="user-cell-avatar">{{user.firstName[0]}} {{user.lastName[0]}}</div>
+              <div class="user-cell-avatar">{{ user.firstName[0] }} {{ user.lastName[0] }}</div>
               <div>
-                <div class="user-cell-name">{{user.firstName}} {{user.lastName}}</div>
-                <div class="user-cell-email">{{user.email}}</div>
+                <div class="user-cell-name">{{ user.firstName }} {{ user.lastName }}</div>
+                <div class="user-cell-email">{{ user.email }}</div>
               </div>
             </div>
           </td>
@@ -48,18 +84,19 @@
 
         <tr>
           <td>
-          @if (user.age<=18){
-            <span class="badge badge-warning">{{user.age}} ani</span>
+            @if (user.age <= 18) {
+              <span class="badge badge-warning">{{ user.age }} ani</span>
 
-          } @else {
-            <span class="badge badge-neutral">{{user.age}} ani</span>
-          }</td>
+            } @else {
+              <span class="badge badge-neutral">{{ user.age }} ani</span>
+            }</td>
           <td class="text-right">
-            <div class="table-actions">
-              <span class="badge badge-neutral"></span>
-              <button class="btn btn-outline" (click)="edit(user)">Editeaza </button>
-              <button class="btn btn-danger" (click)="remove(user.id)">Sterge</button>
-            </div>
+<!--            <div class="table-actions">-->
+<!--              <button (click)="edit(user)" class="btn btn-outline">Editeaza</button>-->
+<!--              <button (click)="remove(user.id)" class="btn btn-danger">Sterge</button>-->
+
+
+<!--            </div>-->
           </td>
 
         </tr>
@@ -69,3 +106,5 @@
     </tbody>
   </table>
 </div>
+
+
